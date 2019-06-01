@@ -55,8 +55,7 @@ namespace Hotel1.Controllers
         // POST: Reservas/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost]        
         public async Task<IActionResult> Create([Bind("Id,CuartoId,FechaReserva,DiasReserva,CantidadPersonas,NombreCliente,IdentificacionCliente")] Reservas reservas)
         {
             if (ModelState.IsValid)
@@ -67,6 +66,20 @@ namespace Hotel1.Controllers
             }
             ViewData["CuartoId"] = new SelectList(_context.Cuartos, "Id", "NumeroHabitacion", reservas.CuartoId);
             return View(reservas);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> CreateJson([FromBody] Reservas reservas)
+        {
+            if (ModelState.IsValid)
+            {
+                _context.Add(reservas);
+                await _context.SaveChangesAsync();
+                return Ok(reservas);
+            }
+
+            return BadRequest(reservas);
         }
 
         // GET: Reservas/Edit/5

@@ -20,6 +20,9 @@ namespace Despegar.Models
         [Required]
         public string Status { get; set; }
 
+        [Required]
+        public int Precio { get; set; }
+
         public string Hotel { get; set; }
     }
 }

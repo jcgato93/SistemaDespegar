@@ -21,6 +21,9 @@ namespace Hotel1.Entity
         [Required]
         public int StatusId { get; set; }
 
+        [Required]
+        public int Precio { get; set; }
+
 
         public virtual ICollection<Reservas> Reservas { get; set; }
 

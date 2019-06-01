@@ -53,13 +53,23 @@ namespace Despegar.Services
         {
             var client = new RestClient("http://localhost:5085");
 
-            var request = new RestRequest("Cuartos/IndexJson", Method.POST);
+            var request = new RestRequest("Reservas/CreateJson", Method.POST);
             request.AddParameter("reservas",new {
                 reserva.CuartoId,
                 reserva.CantidadPersonas,
                 reserva.DiasReserva,
                 reserva.FechaReserva,
-                reserva.NombreCliente,
+                reserva.Cliente.Email,
+                reserva.IdentificacionCliente
+            });
+
+            request.AddJsonBody(new
+            {
+                reserva.CuartoId,
+                reserva.CantidadPersonas,
+                reserva.DiasReserva,
+                reserva.FechaReserva,
+                reserva.Cliente.Email,
                 reserva.IdentificacionCliente
             });
 
@@ -76,14 +86,14 @@ namespace Despegar.Services
         {
             var client = new RestClient("http://localhost:5084");
 
-            var request = new RestRequest("Cuartos/IndexJson", Method.POST);
+            var request = new RestRequest("Reservas/CreateJson", Method.POST);
             request.AddParameter("reservas", new
             {
                 reserva.CuartoId,
                 reserva.CantidadPersonas,
                 reserva.DiasReserva,
                 reserva.FechaReserva,
-                reserva.NombreCliente,
+                reserva.Cliente.Email,
                 reserva.IdentificacionCliente
             });
 

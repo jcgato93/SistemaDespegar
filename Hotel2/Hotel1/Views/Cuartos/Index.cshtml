@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.NumeroHabitacion)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.TipoDeCuarto)
             </th>
             <th>
@@ -29,6 +32,9 @@
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.NumeroHabitacion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Precio)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TipoDeCuarto.descripcion)

@@ -16,6 +16,9 @@
                 @Html.DisplayNameFor(model => model.CuartoId)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Precio)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.FechaReserva)
             </th>
             <th>
@@ -25,13 +28,22 @@
                 @Html.DisplayNameFor(model => model.CantidadPersonas)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.NombreCliente)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.IdentificacionCliente)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Hotel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.TotalPago)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FechaVencimiento)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CVC)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cliente)
             </th>
             <th></th>
         </tr>
@@ -43,6 +55,9 @@
                 @Html.DisplayFor(modelItem => item.CuartoId)
             </td>
             <td>
+                @Html.DisplayFor(modelItem => item.Precio)
+            </td>
+            <td>
                 @Html.DisplayFor(modelItem => item.FechaReserva)
             </td>
             <td>
@@ -52,13 +67,22 @@
                 @Html.DisplayFor(modelItem => item.CantidadPersonas)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.NombreCliente)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.IdentificacionCliente)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Hotel)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TotalPago)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FechaVencimiento)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CVC)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cliente.Id)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

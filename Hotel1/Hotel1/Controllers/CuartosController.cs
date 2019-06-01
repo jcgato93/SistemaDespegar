@@ -29,15 +29,17 @@ namespace Hotel1.Controllers
         public async Task<IActionResult> IndexJson()
         {
             var applicationDbContext = _context.Cuartos
-                .Include(c => c.Status)
-                .Include(c => c.TipoDeCuarto)
-                .Select(x=> new {
-                    Id= x.Id,
-                    NumeroHabitacion=x.NumeroHabitacion,
-                    TipoDeCuarto=x.TipoDeCuarto.descripcion,
-                    Status=x.Status.descripcion,
-                    Hotel = "Hotel 1"
-                });
+               .Include(c => c.Status)
+               .Include(c => c.TipoDeCuarto)
+               .Where(x=>x.StatusId == 1)
+               .Select(x => new {
+                   Id = x.Id,
+                   NumeroHabitacion = x.NumeroHabitacion,
+                   TipoDeCuarto = x.TipoDeCuarto.descripcion,
+                   Status = x.Status.descripcion,
+                   Precio = x.Precio,
+                   Hotel = "Hotel 1"
+               });
             return Json(await applicationDbContext.ToListAsync());
         }
 
@@ -74,7 +76,7 @@ namespace Hotel1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,NumeroHabitacion,TipoDeCuartoId,StatusId")] Cuartos cuartos)
+        public async Task<IActionResult> Create([Bind("Id,NumeroHabitacion,TipoDeCuartoId,StatusId,Precio")] Cuartos cuartos)
         {
             if (ModelState.IsValid)
             {
@@ -110,7 +112,7 @@ namespace Hotel1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,NumeroHabitacion,TipoDeCuartoId,StatusId")] Cuartos cuartos)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,NumeroHabitacion,TipoDeCuartoId,StatusId,Precio")] Cuartos cuartos)
         {
             if (id != cuartos.Id)
             {

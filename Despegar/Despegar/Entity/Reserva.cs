@@ -1,6 +1,9 @@
-﻿using System;
+﻿using Despegar.Models;
+using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -14,6 +17,8 @@ namespace Despegar.Entity
         [Required]
         public int CuartoId { get; set; }
 
+        public int Precio { get; set; }
+
         [Required]
         public DateTime FechaReserva { get; set; }
 
@@ -24,7 +29,7 @@ namespace Despegar.Entity
         public int CantidadPersonas { get; set; }
 
         [Required]
-        public string NombreCliente { get; set; }
+        public string ClienteId { get; set; }
 
         [Required]
         public int IdentificacionCliente { get; set; }
@@ -32,5 +37,21 @@ namespace Despegar.Entity
         [Required]
         public string Hotel { get; set; }
 
+        [Required]
+        [Display(Name ="Total a Pagar")]
+        public int TotalPago { get; set; }
+
+        [Required]
+        [Display(Name ="Fecha de Vencimiento de Tarjeta")]
+        public DateTime FechaVencimiento { get; set; }
+
+        [Required]
+        public string CVC { get; set; }
+
+
+        [ForeignKey(nameof(ClienteId))]
+        public virtual IdentityUser Cliente { get; set; }
+
+       
     }
 }

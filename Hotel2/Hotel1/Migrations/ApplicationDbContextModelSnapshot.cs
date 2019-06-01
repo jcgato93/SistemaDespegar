@@ -24,6 +24,8 @@ namespace Hotel1.Migrations
                     b.Property<string>("NumeroHabitacion")
                         .IsRequired();
 
+                    b.Property<int>("Precio");
+
                     b.Property<int>("StatusId");
 
                     b.Property<int>("TipoDeCuartoId");

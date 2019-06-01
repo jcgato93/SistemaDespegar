@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Despegar.Context;
 using Despegar.Entity;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace Despegar.Controllers
 {
+    [Authorize]
     public class ReservasController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -22,7 +25,11 @@ namespace Despegar.Controllers
         // GET: Reservas
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Reservas.ToListAsync());
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var applicationDbContext = _context.Reservas.Include(r => r.Cliente)
+                .Where(x=>x.ClienteId.Equals(userId));
+
+            return View(await applicationDbContext.ToListAsync());
         }
 
         // GET: Reservas/Details/5
@@ -34,6 +41,7 @@ namespace Despegar.Controllers
             }
 
             var reserva = await _context.Reservas
+                .Include(r => r.Cliente)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (reserva == null)
             {
@@ -44,13 +52,16 @@ namespace Despegar.Controllers
         }
 
         // GET: Reservas/Create
-        public IActionResult Create(int id,string hotel)
+        public IActionResult Create(int id, string hotel,int precio)
         {
             Despegar.Entity.Reserva reserva = new Reserva();
 
             reserva.CuartoId = id;
             reserva.Hotel = hotel;
-            return View(reserva);
+            reserva.Precio = precio;
+
+            ViewData["ClienteId"] = new SelectList(_context.Users, "Id", "Id");
+            return View();
         }
 
         // POST: Reservas/Create
@@ -58,14 +69,17 @@ namespace Despegar.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CuartoId,FechaReserva,DiasReserva,CantidadPersonas,NombreCliente,IdentificacionCliente,Hotel")] Reserva reserva)
+        public async Task<IActionResult> Create([Bind("Id,CuartoId,Precio,FechaReserva,DiasReserva,CantidadPersonas,ClienteId,IdentificacionCliente,Hotel,TotalPago,FechaVencimiento,CVC")] Reserva reserva)
         {
             if (ModelState.IsValid)
             {
+                reserva.TotalPago = reserva.Precio * reserva.DiasReserva;
+
                 _context.Add(reserva);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ClienteId"] = new SelectList(_context.Users, "Id", "Id", reserva.ClienteId);
             return View(reserva);
         }
 
@@ -82,6 +96,7 @@ namespace Despegar.Controllers
             {
                 return NotFound();
             }
+            ViewData["ClienteId"] = new SelectList(_context.Users, "Id", "Id", reserva.ClienteId);
             return View(reserva);
         }
 
@@ -90,7 +105,7 @@ namespace Despegar.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CuartoId,FechaReserva,DiasReserva,CantidadPersonas,NombreCliente,IdentificacionCliente,Hotel")] Reserva reserva)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CuartoId,Precio,FechaReserva,DiasReserva,CantidadPersonas,ClienteId,IdentificacionCliente,Hotel,TotalPago,FechaVencimiento,CVC")] Reserva reserva)
         {
             if (id != reserva.Id)
             {
@@ -117,6 +132,7 @@ namespace Despegar.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["ClienteId"] = new SelectList(_context.Users, "Id", "Id", reserva.ClienteId);
             return View(reserva);
         }
 
@@ -129,6 +145,7 @@ namespace Despegar.Controllers
             }
 
             var reserva = await _context.Reservas
+                .Include(r => r.Cliente)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (reserva == null)
             {
