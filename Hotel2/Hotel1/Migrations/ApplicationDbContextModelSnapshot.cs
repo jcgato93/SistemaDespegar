@@ -57,6 +57,8 @@ namespace Hotel1.Migrations
                     b.Property<string>("NombreCliente")
                         .IsRequired();
 
+                    b.Property<string>("Status");
+
                     b.HasKey("Id");
 
                     b.HasIndex("CuartoId");

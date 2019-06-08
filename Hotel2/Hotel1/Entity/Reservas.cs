@@ -31,6 +31,8 @@ namespace Hotel1.Entity
         [Required]
         public int IdentificacionCliente { get; set; }
 
+        public string Status { get; set; }
+
         [ForeignKey(nameof(CuartoId))]
         public virtual Cuartos Cuartos { get; set; }
     }

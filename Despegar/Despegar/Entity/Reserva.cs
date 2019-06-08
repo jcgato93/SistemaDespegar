@@ -38,6 +38,12 @@ namespace Despegar.Entity
         public string Hotel { get; set; }
 
         [Required]
+        public string Status { get; set; }
+
+        [Required]
+        public int ReservaId { get; set; }
+
+        [Required]
         [Display(Name ="Total a Pagar")]
         public int TotalPago { get; set; }
 

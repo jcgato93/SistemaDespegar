@@ -55,11 +55,13 @@ namespace Hotel1.Controllers
         // POST: Reservas/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]        
-        public async Task<IActionResult> Create([Bind("Id,CuartoId,FechaReserva,DiasReserva,CantidadPersonas,NombreCliente,IdentificacionCliente")] Reservas reservas)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,CuartoId,FechaReserva,DiasReserva,CantidadPersonas,NombreCliente,IdentificacionCliente,Status")] Reservas reservas)
         {
             if (ModelState.IsValid)
             {
+                reservas.Status = "Activa";
                 _context.Add(reservas);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
@@ -69,15 +71,16 @@ namespace Hotel1.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateJson([Bind("Id,CuartoId,FechaReserva,DiasReserva,CantidadPersonas,NombreCliente,IdentificacionCliente")] Reservas reservas)
+        public async Task<IActionResult> CreateJson([FromBody] Reservas reservas)
         {
             if (ModelState.IsValid)
             {
+                reservas.Status = "Activa";
                 _context.Add(reservas);
                 await _context.SaveChangesAsync();
-                return Ok(reservas);
+                return Ok(reservas.Id);
             }
-            
+
             return BadRequest(reservas);
         }
 
@@ -103,7 +106,7 @@ namespace Hotel1.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CuartoId,FechaReserva,DiasReserva,CantidadPersonas,NombreCliente,IdentificacionCliente")] Reservas reservas)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CuartoId,FechaReserva,DiasReserva,CantidadPersonas,NombreCliente,IdentificacionCliente,Status")] Reservas reservas)
         {
             if (id != reservas.Id)
             {
@@ -154,14 +157,32 @@ namespace Hotel1.Controllers
         }
 
         // POST: Reservas/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
+        [HttpPost, ActionName("Delete")]        
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var reservas = await _context.Reservas.FindAsync(id);
-            _context.Reservas.Remove(reservas);
+            //_context.Reservas.Remove(reservas);
+            //await _context.SaveChangesAsync();
+
+            reservas.Status = "Cancelada";
+            _context.Update(reservas);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DeleteJson(int id)
+        {
+            var reservas = await _context.Reservas.FindAsync(id);
+            //_context.Reservas.Remove(reservas);
+            //await _context.SaveChangesAsync();
+
+            reservas.Status = "Cancelada";
+            _context.Update(reservas);
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         private bool ReservasExists(int id)

@@ -7,8 +7,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Despegar.Context;
 using Despegar.Entity;
-using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
+using Despegar.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Despegar.Controllers
 {
@@ -27,7 +28,7 @@ namespace Despegar.Controllers
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
             var applicationDbContext = _context.Reservas.Include(r => r.Cliente)
-                .Where(x=>x.ClienteId.Equals(userId));
+                .Where(x => x.ClienteId.Equals(userId));
 
             return View(await applicationDbContext.ToListAsync());
         }
@@ -52,7 +53,7 @@ namespace Despegar.Controllers
         }
 
         // GET: Reservas/Create
-        public IActionResult Create(int id, string hotel,int precio)
+        public IActionResult Create(int id, string hotel, int precio)
         {
             Despegar.Entity.Reserva reserva = new Reserva();
 
@@ -69,15 +70,29 @@ namespace Despegar.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CuartoId,Precio,FechaReserva,DiasReserva,CantidadPersonas,ClienteId,IdentificacionCliente,Hotel,TotalPago,FechaVencimiento,CVC")] Reserva reserva)
+        public async Task<IActionResult> Create([Bind("Id,CuartoId,Precio,FechaReserva,DiasReserva,CantidadPersonas,ClienteId,IdentificacionCliente,Hotel,Status,ReservaId,TotalPago,FechaVencimiento,CVC")] Reserva reserva)
         {
+            int? reservaId = null;
             if (ModelState.IsValid)
             {
                 reserva.TotalPago = reserva.Precio * reserva.DiasReserva;
 
-                _context.Add(reserva);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if(reserva.Hotel.Equals("Hotel 1"))
+                {
+                  reservaId= CuartoService.SaveReservaHotel1(reserva);
+                }
+                else if (reserva.Hotel.Equals("Hotel 2"))
+                {
+                    reservaId = CuartoService.SaveReservaHotel2(reserva);
+                }
+
+                if (reservaId != null)
+                {
+                    reserva.ReservaId = (int)reservaId;
+                    _context.Add(reserva);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
             ViewData["ClienteId"] = new SelectList(_context.Users, "Id", "Id", reserva.ClienteId);
             return View(reserva);
@@ -105,7 +120,7 @@ namespace Despegar.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,CuartoId,Precio,FechaReserva,DiasReserva,CantidadPersonas,ClienteId,IdentificacionCliente,Hotel,TotalPago,FechaVencimiento,CVC")] Reserva reserva)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,CuartoId,Precio,FechaReserva,DiasReserva,CantidadPersonas,ClienteId,IdentificacionCliente,Hotel,Status,ReservaId,TotalPago,FechaVencimiento,CVC")] Reserva reserva)
         {
             if (id != reserva.Id)
             {
@@ -160,9 +175,26 @@ namespace Despegar.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            bool resultDelete = false;
             var reserva = await _context.Reservas.FindAsync(id);
-            _context.Reservas.Remove(reserva);
-            await _context.SaveChangesAsync();
+            //_context.Reservas.Remove(reserva);
+            //await _context.SaveChangesAsync();
+            if (reserva.Hotel.Equals("Hotel 1"))
+            {
+                resultDelete = CuartoService.DeleteReservaHotel1(reserva.Id);
+            }
+            else if (reserva.Hotel.Equals("Hotel 2"))
+            {
+                resultDelete = CuartoService.DeleteReservaHotel2(reserva.Id);
+            }
+
+
+            if (resultDelete)
+            {
+                reserva.Status = "Cancelada";
+                _context.Update(reserva);
+                await _context.SaveChangesAsync();
+            }
             return RedirectToAction(nameof(Index));
         }
 

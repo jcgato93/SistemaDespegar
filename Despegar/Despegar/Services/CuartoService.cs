@@ -49,7 +49,7 @@ namespace Despegar.Services
             }
         }
 
-        public static bool SaveReservaHotel1(Reserva reserva)
+        public static int? SaveReservaHotel1(Reserva reserva)
         {
             var client = new RestClient("http://localhost:5085");
 
@@ -74,15 +74,15 @@ namespace Despegar.Services
             });
 
             IRestResponse response = client.Execute(request);
-            var content = response.Content;
+            
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
-                return true;
+                return int.Parse(response.Content);
             else
-                return false;
+                return null;
         }
 
-        public static bool SaveReservaHotel2(Reserva reserva)
+        public static int? SaveReservaHotel2(Reserva reserva)
         {
             var client = new RestClient("http://localhost:5084");
 
@@ -98,7 +98,39 @@ namespace Despegar.Services
             });
 
             IRestResponse response = client.Execute(request);
-            var content = response.Content;
+            
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                return int.Parse(response.Content);
+            else
+                return null;
+        }
+
+        public static bool DeleteReservaHotel1(int reservaId)
+        {
+            var client = new RestClient("http://localhost:5085");
+
+            var request = new RestRequest("Reservas/DeleteJson", Method.POST);
+            request.AddParameter("id", reservaId);
+
+            IRestResponse response = client.Execute(request);
+            
+
+            if (response.StatusCode == System.Net.HttpStatusCode.OK)
+                return true;
+            else
+                return false;
+        }
+
+        public static bool DeleteReservaHotel2(int reservaId)
+        {
+            var client = new RestClient("http://localhost:5084");
+
+            var request = new RestRequest("Reservas/DeleteJson", Method.POST);
+            request.AddParameter("id", reservaId);
+
+            IRestResponse response = client.Execute(request);
+            
 
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 return true;

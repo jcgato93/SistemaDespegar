@@ -10,6 +10,8 @@
     <Compile Remove="Migrations\20190506235418_initdb.Designer.cs" />
     <Compile Remove="Migrations\20190514030843_changeToMysql.cs" />
     <Compile Remove="Migrations\20190514030843_changeToMysql.Designer.cs" />
+    <Compile Remove="Migrations\20190608210821_addStatus.cs" />
+    <Compile Remove="Migrations\20190608210821_addStatus.Designer.cs" />
   </ItemGroup>
 
 
