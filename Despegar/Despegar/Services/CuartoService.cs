@@ -13,7 +13,7 @@ namespace Despegar.Services
 
         public static List<Cuartos> GetCuartosHotel1()
         {
-            var client = new RestClient("http://localhost:5085");
+            var client = new RestClient("http://hotela.azurewebsites.net");
 
             var request = new RestRequest("Cuartos/IndexJson", Method.GET);
 
@@ -51,7 +51,7 @@ namespace Despegar.Services
 
         public static int? SaveReservaHotel1(Reserva reserva)
         {
-            var client = new RestClient("http://localhost:5085");
+            var client = new RestClient("http://hotela.azurewebsites.net");
 
             var request = new RestRequest("Reservas/CreateJson", Method.POST);
             request.AddParameter("reservas",new {
@@ -108,7 +108,7 @@ namespace Despegar.Services
 
         public static bool DeleteReservaHotel1(int reservaId)
         {
-            var client = new RestClient("http://localhost:5085");
+            var client = new RestClient("http://hotela.azurewebsites.net");
 
             var request = new RestRequest("Reservas/DeleteJson", Method.POST);
             request.AddParameter("id", reservaId);
