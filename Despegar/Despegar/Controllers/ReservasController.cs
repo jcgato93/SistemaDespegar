@@ -89,6 +89,7 @@ namespace Despegar.Controllers
                 if (reservaId != null)
                 {
                     reserva.ReservaId = (int)reservaId;
+                    reserva.ClienteId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
                     _context.Add(reserva);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
