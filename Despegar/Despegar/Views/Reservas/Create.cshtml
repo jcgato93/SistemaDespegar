@@ -11,15 +11,15 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @*<div asp-validation-summary="ModelOnly" class="text-danger"></div>*@
             <div class="form-group">
                 <label asp-for="CuartoId" class="control-label"></label>
-                <input asp-for="CuartoId" class="form-control" />
-                <span asp-validation-for="CuartoId" class="text-danger"></span>
+                <input asp-for="CuartoId"  class="form-control" />
+                <span asp-validation-for="CuartoId" class="text-danger"></span>               
             </div>
             <div class="form-group">
-                <label asp-for="Precio" class="control-label"></label>
-                <input asp-for="Precio" class="form-control" />
+                <label asp-for="Precio"  class="control-label"></label>
+                <input asp-for="Precio"  class="form-control" />
                 <span asp-validation-for="Precio" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -36,11 +36,7 @@
                 <label asp-for="CantidadPersonas" class="control-label"></label>
                 <input asp-for="CantidadPersonas" class="form-control" />
                 <span asp-validation-for="CantidadPersonas" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ClienteId" class="control-label"></label>
-                <select asp-for="ClienteId" class ="form-control" asp-items="ViewBag.ClienteId"></select>
-            </div>
+            </div>            
             <div class="form-group">
                 <label asp-for="IdentificacionCliente" class="control-label"></label>
                 <input asp-for="IdentificacionCliente" class="form-control" />
@@ -51,21 +47,8 @@
                 <input asp-for="Hotel" class="form-control" />
                 <span asp-validation-for="Hotel" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="Status" class="control-label"></label>
-                <input asp-for="Status" class="form-control" />
-                <span asp-validation-for="Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ReservaId" class="control-label"></label>
-                <input asp-for="ReservaId" class="form-control" />
-                <span asp-validation-for="ReservaId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="TotalPago" class="control-label"></label>
-                <input asp-for="TotalPago" class="form-control" />
-                <span asp-validation-for="TotalPago" class="text-danger"></span>
-            </div>
+            
+                        
             <div class="form-group">
                 <label asp-for="FechaVencimiento" class="control-label"></label>
                 <input asp-for="FechaVencimiento" class="form-control" />

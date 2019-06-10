@@ -48,7 +48,7 @@ namespace Despegar.Entity
         public int TotalPago { get; set; }
 
         [Required]
-        [Display(Name ="Fecha de Vencimiento de Tarjeta")]
+        [Display(Name ="Fecha de Vencimiento de la Tarjeta")]
         public DateTime FechaVencimiento { get; set; }
 
         [Required]

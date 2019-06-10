@@ -61,8 +61,8 @@ namespace Despegar.Controllers
             reserva.Hotel = hotel;
             reserva.Precio = precio;
 
-            ViewData["ClienteId"] = new SelectList(_context.Users, "Id", "Id");
-            return View();
+            
+            return View(reserva);
         }
 
         // POST: Reservas/Create
@@ -70,14 +70,17 @@ namespace Despegar.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,CuartoId,Precio,FechaReserva,DiasReserva,CantidadPersonas,ClienteId,IdentificacionCliente,Hotel,Status,ReservaId,TotalPago,FechaVencimiento,CVC")] Reserva reserva)
+        public async Task<IActionResult> Create(Reserva reserva)
         {
             int? reservaId = null;
-            if (ModelState.IsValid)
-            {
-                reserva.TotalPago = reserva.Precio * reserva.DiasReserva;
+            reserva.TotalPago = reserva.Precio * reserva.DiasReserva;
 
-                if(reserva.Hotel.Equals("Hotel 1"))
+
+                reserva.Cliente = new Microsoft.AspNetCore.Identity.IdentityUser();
+                var email = User.FindFirst(ClaimTypes.Name).Value;
+                reserva.Cliente.Email = email;
+
+                if (reserva.Hotel.Equals("Hotel 1"))
                 {
                   reservaId= CuartoService.SaveReservaHotel1(reserva);
                 }
@@ -90,11 +93,14 @@ namespace Despegar.Controllers
                 {
                     reserva.ReservaId = (int)reservaId;
                     reserva.ClienteId = User.FindFirst(ClaimTypes.NameIdentifier).Value;
+                    reserva.Status = "Activa";
+
+                    reserva.Cliente = null;
                     _context.Add(reserva);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
-            }
+            
             ViewData["ClienteId"] = new SelectList(_context.Users, "Id", "Id", reserva.ClienteId);
             return View(reserva);
         }

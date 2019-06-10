@@ -59,11 +59,18 @@ namespace Hotel1.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,CuartoId,FechaReserva,DiasReserva,CantidadPersonas,NombreCliente,IdentificacionCliente,Status")] Reservas reservas)
         {
+            reservas.Status = "Activa";
             if (ModelState.IsValid)
             {
-                reservas.Status = "Activa";
+
                 _context.Add(reservas);
                 await _context.SaveChangesAsync();
+
+                var cuartos = await _context.Cuartos.FindAsync(reservas.CuartoId);
+                cuartos.StatusId = 2;
+                _context.Update(cuartos);
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CuartoId"] = new SelectList(_context.Cuartos, "Id", "NumeroHabitacion", reservas.CuartoId);
@@ -73,11 +80,17 @@ namespace Hotel1.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateJson([FromBody] Reservas reservas)
         {
+            reservas.Status = "Activa";
             if (ModelState.IsValid)
             {
-                reservas.Status = "Activa";
                 _context.Add(reservas);
                 await _context.SaveChangesAsync();
+
+                var cuartos = await _context.Cuartos.FindAsync(reservas.CuartoId);
+                cuartos.StatusId = 2;
+                _context.Update(cuartos);
+                await _context.SaveChangesAsync();
+
                 return Ok(reservas.Id);
             }
 

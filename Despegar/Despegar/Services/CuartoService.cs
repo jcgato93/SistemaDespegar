@@ -54,14 +54,7 @@ namespace Despegar.Services
             var client = new RestClient("http://hotela.azurewebsites.net");
 
             var request = new RestRequest("Reservas/CreateJson", Method.POST);
-            request.AddParameter("reservas",new {
-                reserva.CuartoId,
-                reserva.CantidadPersonas,
-                reserva.DiasReserva,
-                reserva.FechaReserva,
-                reserva.Cliente.Email,
-                reserva.IdentificacionCliente
-            });
+           
 
             request.AddJsonBody(new
             {
@@ -87,13 +80,13 @@ namespace Despegar.Services
             var client = new RestClient("http://localhost:5084");
 
             var request = new RestRequest("Reservas/CreateJson", Method.POST);
-            request.AddParameter("reservas", new
+            request.AddJsonBody( new
             {
                 reserva.CuartoId,
                 reserva.CantidadPersonas,
                 reserva.DiasReserva,
                 reserva.FechaReserva,
-                reserva.Cliente.Email,
+                NombreCliente = reserva.Cliente.Email,
                 reserva.IdentificacionCliente
             });
 
