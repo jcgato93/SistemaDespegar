@@ -178,7 +178,7 @@ namespace Hotel1.Controllers
             //await _context.SaveChangesAsync();
 
             reservas.Status = "Cancelada";
-            _context.Reservas.Remove(reservas);
+            _context.Reservas.Update(reservas);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
