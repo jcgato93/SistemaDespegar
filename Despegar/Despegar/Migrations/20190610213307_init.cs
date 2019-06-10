@@ -167,6 +167,8 @@ namespace Despegar.Migrations
                     ClienteId = table.Column<string>(nullable: false),
                     IdentificacionCliente = table.Column<int>(nullable: false),
                     Hotel = table.Column<string>(nullable: false),
+                    Status = table.Column<string>(nullable: false),
+                    ReservaId = table.Column<int>(nullable: false),
                     TotalPago = table.Column<int>(nullable: false),
                     FechaVencimiento = table.Column<DateTime>(nullable: false),
                     CVC = table.Column<string>(nullable: false)

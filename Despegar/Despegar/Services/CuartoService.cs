@@ -62,7 +62,7 @@ namespace Despegar.Services
                 reserva.CantidadPersonas,
                 reserva.DiasReserva,
                 reserva.FechaReserva,
-                reserva.Cliente.Email,
+                NombreCliente = reserva.Cliente.Email,
                 reserva.IdentificacionCliente
             });
 

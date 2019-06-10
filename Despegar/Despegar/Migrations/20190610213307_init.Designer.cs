@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Despegar.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20190608220127_reservaId")]
-    partial class reservaId
+    [Migration("20190610213307_init")]
+    partial class init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {

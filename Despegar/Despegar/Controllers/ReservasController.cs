@@ -96,6 +96,7 @@ namespace Despegar.Controllers
                     reserva.Status = "Activa";
 
                     reserva.Cliente = null;
+                    reserva.Id = 0;
                     _context.Add(reserva);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));

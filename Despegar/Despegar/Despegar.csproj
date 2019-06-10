@@ -10,6 +10,10 @@
     <Compile Remove="Migrations\20190519215744_init.Designer.cs" />
     <Compile Remove="Migrations\20190601151800_init.cs" />
     <Compile Remove="Migrations\20190601151800_init.Designer.cs" />
+    <Compile Remove="Migrations\20190608214305_addStatus.cs" />
+    <Compile Remove="Migrations\20190608214305_addStatus.Designer.cs" />
+    <Compile Remove="Migrations\20190608220127_reservaId.cs" />
+    <Compile Remove="Migrations\20190608220127_reservaId.Designer.cs" />
   </ItemGroup>
 
 
